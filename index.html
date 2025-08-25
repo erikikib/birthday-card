@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Emma!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            height: 100vh;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(135deg, #87CEEB 0%, #FFB6C1 100%);
+        }
+        .card-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .celebration-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+        .celebration-card:hover { transform: scale(1.02); }
+        .birthday-title {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FF69B4, #87CEEB, #FFB6C1);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        .recipient-name {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #FF69B4;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        .birthday-message {
+            font-size: 1.3rem;
+            color: #666;
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+        .cake-icon { margin: 30px 0; animation: float 3s ease-in-out infinite; }
+        .interactive-hint {
+            font-size: 1rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .confetti-piece, .sparkle {
+            position: absolute;
+            pointer-events: none;
+        }
+        .confetti-piece { width: 10px; height: 10px; z-index: 5; }
+        .sparkle { width: 20px; height: 20px; z-index: 15; }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @keyframes sparkleGlow {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .birthday-title { font-size: 2.2rem; }
+            .recipient-name { font-size: 3rem; }
+            .birthday-message { font-size: 1.1rem; }
+            .celebration-card { padding: 40px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" onclick="createCelebration(event)">
+        <div class="celebration-card">
+            <div class="birthday-title">Happy Birthday</div>
+            <div class="recipient-name">Emma</div>
+            <div class="cake-icon">
+                <svg width="80" height="80" viewBox="0 0 100 100">
+                    <rect x="20" y="60" width="60" height="30" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" rx="5"/>
+                    <rect x="25" y="45" width="50" height="20" fill="#87CEEB" stroke="#4682B4" stroke-width="2" rx="3"/>
+                    <rect x="30" y="30" width="40" height="20" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" rx="3"/>
+                    <rect x="40" y="15" width="3" height="15" fill="#FFD700"/>
+                    <rect x="50" y="15" width="3" height="15" fill="#FFD700"/>
+                    <rect x="60" y="15" width="3" height="15" fill="#FFD700"/>
+                    <ellipse cx="41.5" cy="12" rx="2" ry="4" fill="#FF4500"/>
+                    <ellipse cx="51.5" cy="12" rx="2" ry="4" fill="#FF4500"/>
+                    <ellipse cx="61.5" cy="12" rx="2" ry="4" fill="#FF4500"/>
+                    <circle cx="35" cy="40" r="3" fill="#FF69B4"/>
+                    <circle cx="50" cy="55" r="3" fill="#87CEEB"/>
+                    <circle cx="65" cy="40" r="3" fill="#FF69B4"/>
+                </svg>
+            </div>
+            <div class="birthday-message">
+                Wishing you a day filled with happiness<br>
+                and a year filled with joy! 🎉
+            </div>
+            <div class="interactive-hint">Click anywhere to celebrate! ✨</div>
+        </div>
+    </div>
+    <script>
+        function createCelebration(event) {
+            createConfetti(event);
+            createSparkles(event);
+            celebrateCard();
+        }
+        function createConfetti(event) {
+            const colors = ['#FF69B4', '#87CEEB', '#FFB6C1', '#FFD700', '#98FB98', '#DDA0DD'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = event.clientX + 'px';
+                confetti.style.top = event.clientY + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                const randomX = (Math.random() - 0.5) * 400;
+                confetti.style.transform = `translateX(${randomX}px)`;
+                confetti.style.animation = `confettiFall ${2 + Math.random() * 2}s linear forwards`;
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+        function createSparkles(event) {
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.innerHTML = '✨';
+                sparkle.style.left = (event.clientX - 10) + 'px';
+                sparkle.style.top = (event.clientY - 10) + 'px';
+                sparkle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                const angle = (i / 8) * 360;
+                const distance = 50 + Math.random() * 50;
+                const endX = Math.cos(angle * Math.PI / 180) * distance;
+                const endY = Math.sin(angle * Math.PI / 180) * distance;
+                sparkle.style.animation = `sparkleGlow 1.5s ease-out forwards`;
+                sparkle.style.animationDelay = (i * 0.1) + 's';
+                setTimeout(() => { sparkle.style.transform = `translate(${endX}px, ${endY}px) scale(0)`; }, i * 100 + 100);
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+        function celebrateCard() {
+            const card = document.querySelector('.celebration-card');
+            card.style.transform = 'scale(1.05)';
+            card.style.boxShadow = '0 25px 50px rgba(255, 105, 180, 0.3)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+                card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.1)';
+            }, 300);
+        }
+        // Auto-celebration on load
+        setTimeout(() => {
+            createCelebration({
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
